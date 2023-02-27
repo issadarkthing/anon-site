@@ -29,7 +29,8 @@ function ReplySection(props: { isLoading: boolean, error: any, data: Reply[] }) 
         const time = DateTime.fromISO(x.time);
 
         return (
-          <Box 
+          <Box
+            key={x.id}
             display="flex"
             flexDirection="column"
             gap="10px"
