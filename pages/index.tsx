@@ -59,7 +59,7 @@ function ReplySection(props: { isLoading: boolean, error: any, data: Reply[] }) 
 }
 
 export default function Home() {
-  const CHARACTER_LIMIT = 1024;
+  const CHARACTER_LIMIT = 256;
   const messageRef = useRef<HTMLInputElement>();
   const [sendStatus, setSendStatus] = useState("");
   const [charCount, setCharCount] = useState(0);
