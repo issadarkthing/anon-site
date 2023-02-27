@@ -45,7 +45,7 @@ function ReplySection(props: { isLoading: boolean, error: any, data: Reply[] }) 
             <Typography color="#ffffff9d" variant="caption">
               {time.toRelative()}
             </Typography>
-            <Typography variant="body1" color="#1976d0" style={{ fontWeight: "bold" }}>
+            <Typography variant="body1" style={{ fontWeight: "bold" }}>
               {x.message}
             </Typography>
             <Typography variant="body2">
