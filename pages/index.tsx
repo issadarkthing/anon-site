@@ -6,7 +6,6 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { useRef, useState } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
-import { Theme } from '@mui/material';
 
 
 export default function Home() {
@@ -26,7 +25,7 @@ export default function Home() {
     }
 
     setLoading(true);
-    const res = await fetch("https://server2.discordrpg.com/message", {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/message`, {
       method: "POST",
       body: JSON.stringify({ message }),
       headers: {
@@ -58,7 +57,6 @@ export default function Home() {
           rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
         />
-        <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
         <Box 
@@ -85,7 +83,7 @@ export default function Home() {
           </Typography>
           <Typography variant="subtitle1">
             Anonymous messaging 
-            created by <a href="https://issadarkthing.com">issadarkthing</a>
+            created by <a style={{ color: "lightblue" }} href="https://issadarkthing.com">issadarkthing</a>
           </Typography>
           <form onSubmit={onSubmit}>
             <Box 
