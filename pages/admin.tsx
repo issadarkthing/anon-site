@@ -9,6 +9,42 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { useRef, useState } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
+import { GetServerSideProps } from "next";
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const token = context.req.cookies.token;
+
+  if (!token) {
+    return { 
+      props: {},
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      }
+    };
+  }
+
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/authenticate`, {
+    method: "POST",
+    headers: {
+      token,
+    }
+  });
+
+  if (res.status !== 200) {
+    return { 
+      props: {},
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      }
+    };
+  }
+
+  return {
+    props: {},
+  }
+}
 
 interface Message {
   id: number;
@@ -208,7 +244,7 @@ export default function admin() {
           })}
         >
           <Typography variant="h4">
-            📨 Anon Messaging
+            <a href="/" style={{ textDecoration: "none", color: "inherit" }}>📨 Anon Messaging</a>
           </Typography>
           <Typography variant="body1">
             Welcome back raziman! Here are few messages for you to respond to.

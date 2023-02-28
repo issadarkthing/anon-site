@@ -7,9 +7,42 @@ import Button from "@mui/material/Button";
 import { useRef, useState } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 import cookie from "js-cookie";
+import { GetServerSideProps } from "next";
+import { useRouter } from "next/router";
 
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const token = context.req.cookies.token;
+
+  if (!token) {
+    return { 
+      props: {},
+    };
+  }
+
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/authenticate`, {
+    method: "POST",
+    headers: {
+      token,
+    }
+  });
+
+  if (res.status !== 200) {
+    return { 
+      props: {},
+    };
+  }
+
+  return {
+    props: {},
+    redirect: {
+      destination: "/admin",
+      permanent: false,
+    }
+  }
+}
 
 export default function login() {
+  const router = useRouter();
   const passwordRef = useRef<HTMLInputElement>();
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState("");
@@ -35,6 +68,7 @@ export default function login() {
     if (res.ok) {
       setStatus("Login successfully");
       cookie.set("token", token);
+      router.push("/admin");
 
     } else {
 

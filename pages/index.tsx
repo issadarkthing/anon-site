@@ -138,7 +138,7 @@ export default function Home() {
           })}
         >
           <Typography variant="h4">
-            📨 Anon Messaging
+            <a href="/login" style={{ textDecoration: "none", color: "inherit" }}>📨 Anon Messaging</a>
           </Typography>
           <Typography variant="subtitle1">
             Anonymous messaging 
