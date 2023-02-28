@@ -27,25 +27,35 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
 
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/authenticate`, {
-    method: "POST",
-    headers: {
-      token,
-    }
-  });
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/authenticate`, {
+      method: "POST",
+      headers: {
+        token,
+      }
+    });
 
-  if (res.status !== 200) {
-    return { 
+    if (res.status !== 200) {
+      return { 
+        props: {},
+        redirect: {
+          destination: "/login",
+          permanent: false,
+        }
+      };
+    }
+
+    return {
+      props: {},
+    }
+  } catch {
+    return {
       props: {},
       redirect: {
-        destination: "/login",
+        destination: "/500",
         permanent: false,
       }
-    };
-  }
-
-  return {
-    props: {},
+    }
   }
 }
 
