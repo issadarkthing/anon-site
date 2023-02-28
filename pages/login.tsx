@@ -6,7 +6,7 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { useRef, useState } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
-
+import cookie from "js-cookie";
 
 
 export default function login() {
@@ -34,7 +34,7 @@ export default function login() {
 
     if (res.ok) {
       setStatus("Login successfully");
-
+      cookie.set("token", token);
 
     } else {
 
