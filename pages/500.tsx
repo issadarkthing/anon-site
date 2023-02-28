@@ -15,7 +15,7 @@ export default function Page500() {
       </Head>
       <main className={styles.main}>
         <Typography variant="h4">
-          error 500: internal server error
+         500 | Internal Server Error
         </Typography>
       </main>
     </>
