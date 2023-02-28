@@ -9,8 +9,11 @@ import CircularProgress from "@mui/material/CircularProgress";
 import cookie from "js-cookie";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  //@ts-ignore
+  const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
   const token = context.req.cookies.token;
 
   if (!token) {
@@ -41,7 +44,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 }
 
-export default function login() {
+export default function Login() {
   const router = useRouter();
   const passwordRef = useRef<HTMLInputElement>();
   const [loading, setLoading] = useState(false);
@@ -113,13 +116,13 @@ export default function login() {
           })}
         >
           <Typography variant="h4">
-            <a href="/" style={{ color: "whitesmoke", textDecoration: "none" }}>
+            <Link href="/" style={{ color: "whitesmoke", textDecoration: "none" }}>
               📨 Anon Messaging
-            </a>
+            </Link>
           </Typography>
           <Typography variant="body1">
             You are entering admin route 🚧 
-            <br /> Click <a href="/" style={{ color: "lightblue" }}>here</a> to return home
+            <br /> Click <Link href="/" style={{ color: "lightblue" }}>here</Link> to return home
           </Typography>
           <form onSubmit={onSubmit}>
             <Box 

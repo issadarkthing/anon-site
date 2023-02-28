@@ -10,8 +10,11 @@ import TextField from "@mui/material/TextField";
 import { useRef, useState } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 import { GetServerSideProps } from "next";
+import Link from "next/link";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  //@ts-ignore
+  const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
   const token = context.req.cookies.token;
 
   if (!token) {
@@ -70,15 +73,14 @@ function ReplySection(props: {
   const refetch = props.refetch;
 
   const ReplyButton = (props: { isReplied: boolean, message: Message }) => {
-
-    if (props.isReplied) return <></>;
-
     const CHARACTER_LIMIT = 2560;
     const messageRef = useRef<HTMLInputElement>();
     const [charCount, setCharCount] = useState(0);
     const [showInput, setShowInput] = useState(false);
     const [loading, setLoading] = useState(false);
     const [status, setStatus] = useState("");
+
+    if (props.isReplied) return <></>;
 
     const onSubmit = async (e: React.FormEvent) => {
       e.preventDefault();
@@ -193,7 +195,7 @@ function ReplySection(props: {
   )
 }
 
-export default function admin() {
+export default function Admin() {
   const token = cookie.get("token")!;
 
   let { 
@@ -244,7 +246,7 @@ export default function admin() {
           })}
         >
           <Typography variant="h4">
-            <a href="/" style={{ textDecoration: "none", color: "inherit" }}>📨 Anon Messaging</a>
+            <Link href="/" style={{ textDecoration: "none", color: "inherit" }}>📨 Anon Messaging</Link>
           </Typography>
           <Typography variant="body1">
             Welcome back raziman! Here are few messages for you to respond to.

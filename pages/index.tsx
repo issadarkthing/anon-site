@@ -8,6 +8,7 @@ import { useRef, useState } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useQuery } from 'react-query';
 import { DateTime } from "luxon";
+import Link from 'next/link';
 
 interface Reply {
   id: string;
@@ -138,7 +139,7 @@ export default function Home() {
           })}
         >
           <Typography variant="h4">
-            <a href="/login" style={{ textDecoration: "none", color: "inherit" }}>📨 Anon Messaging</a>
+            <Link href="/login" style={{ textDecoration: "none", color: "inherit" }}>📨 Anon Messaging</Link>
           </Typography>
           <Typography variant="subtitle1">
             Anonymous messaging 
