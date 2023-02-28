@@ -113,10 +113,13 @@ export default function login() {
           })}
         >
           <Typography variant="h4">
-            📨 Anon Messaging
+            <a href="/" style={{ color: "whitesmoke", textDecoration: "none" }}>
+              📨 Anon Messaging
+            </a>
           </Typography>
           <Typography variant="body1">
-            Entering admin route, please enter the password.
+            You are entering admin route 🚧 
+            <br /> Click <a href="/" style={{ color: "lightblue" }}>here</a> to return home
           </Typography>
           <form onSubmit={onSubmit}>
             <Box 
