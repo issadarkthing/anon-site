@@ -15,7 +15,7 @@ export default function Page404() {
       </Head>
       <main className={styles.main}>
         <Typography variant="h4">
-         400 | Page Not Found
+         404 | Page Not Found
         </Typography>
       </main>
     </>
