@@ -8,6 +8,7 @@ import { useQuery } from 'react-query';
 import { DateTime } from "luxon";
 import Link from 'next/link';
 import { Skeleton } from '@mui/material';
+import Head from "next/head";
 
 interface Reply {
   id: string;
@@ -134,6 +135,10 @@ export default function Home() {
 
   return (
     <>
+      <Head>
+        <title>Anon Messaging</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </Head>
       <Typography variant="h4">
         <Link href="/login" style={{ textDecoration: "none", color: "inherit" }}>📨 Anon Messaging</Link>
       </Typography>

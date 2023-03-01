@@ -8,6 +8,7 @@ import cookie from "js-cookie";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import Head from "next/head";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   //@ts-ignore
@@ -98,6 +99,10 @@ export default function Login() {
 
   return (
     <>
+      <Head>
+        <title>Anon Messaging</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </Head>
       <Typography variant="h4">
         <Link href="/" style={{ color: "whitesmoke", textDecoration: "none" }}>
           📨 Anon Messaging

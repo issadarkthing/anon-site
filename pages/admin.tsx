@@ -10,6 +10,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { GetServerSideProps } from "next";
 import Link from "next/link";
 import Skeleton from "@mui/material/Skeleton";
+import Head from "next/head";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   //@ts-ignore
@@ -178,7 +179,6 @@ function ReplySection(props: {
     <>
       {props.data.map(x => {
         const messageTime = DateTime.fromISO(x.message_time);
-        const replyTime = DateTime.fromISO(x.reply_time);
 
         return (
           <Box
@@ -236,6 +236,10 @@ export default function Admin() {
 
   return (
     <>
+      <Head>
+        <title>Anon Messaging</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </Head>
       <Typography variant="h4">
         <Link href="/" style={{ textDecoration: "none", color: "inherit" }}>📨 Anon Messaging</Link>
       </Typography>
