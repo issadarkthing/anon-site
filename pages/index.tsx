@@ -9,6 +9,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { useQuery } from 'react-query';
 import { DateTime } from "luxon";
 import Link from 'next/link';
+import { Skeleton } from '@mui/material';
 
 interface Reply {
   id: string;
@@ -18,10 +19,22 @@ interface Reply {
   reply: string;
 }
 
-function ReplySection(props: { isLoading: boolean, error: any, data: Reply[] }) {
+function ReplySection(props: { isLoading: boolean, error: any, data: Reply[] | undefined }) {
 
   if (props.error) {
     return <Typography variant="h5">{props.error.response}</Typography>
+  }
+
+  if (!props.data) {
+    const content = Array(10).fill(1).map((_, i) => i);
+
+    return (
+      <>
+        {content.map(x => 
+          <Skeleton key={x} variant="rounded" height="110px" />
+        )}
+      </>
+    )
   }
 
   return (
@@ -58,6 +71,17 @@ function ReplySection(props: { isLoading: boolean, error: any, data: Reply[] }) 
       })}
     </>
   )
+}
+
+export function delayAsync<T>(cb: () => Promise<T>, delay: number) {
+  return async () => {
+    const result = await cb();
+    return new Promise<T>(resolve => {
+      setTimeout(() => {
+        resolve(result);
+      }, delay);
+    })
+  }
 }
 
 export default function Home() {
@@ -176,7 +200,7 @@ export default function Home() {
                   {loading ? <CircularProgress sx={{ color: "whitesmoke" }} size={25} /> : "send"}
               </Button>
               <Typography variant="caption">{sendStatus}</Typography>
-              {data && <ReplySection isLoading={isLoading} error={error as string} data={data} />}
+              <ReplySection isLoading={isLoading} error={error as string} data={data} />
             </Box>
           </form>
         </Box>

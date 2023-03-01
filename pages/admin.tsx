@@ -11,6 +11,7 @@ import { useRef, useState } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 import { GetServerSideProps } from "next";
 import Link from "next/link";
+import Skeleton from "@mui/material/Skeleton";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   //@ts-ignore
@@ -77,7 +78,15 @@ function ReplySection(props: {
 }) {
 
   if (!props.data) {
-    return <></>
+    const content = Array(10).fill(1).map((_, i) => i);
+
+    return (
+      <>
+        {content.map(x => 
+          <Skeleton key={x} variant="rounded" height="110px" />
+        )}
+      </>
+    )
   }
 
   const refetch = props.refetch;
