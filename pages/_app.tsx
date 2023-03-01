@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { ThemeProvider, createTheme } from "@mui/material/styles"
 import styles from "@/styles/Home.module.css";
 import Box from '@mui/material/Box';
+import { Analytics } from "@vercel/analytics/react";
 
 const queryClient = new QueryClient();
 
@@ -40,6 +41,7 @@ export default function App({ Component, pageProps }: AppProps) {
             })}
           >
             <Component {...pageProps} />
+            <Analytics />
           </Box>
         </main>
       </QueryClientProvider>
