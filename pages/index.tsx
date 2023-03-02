@@ -21,32 +21,50 @@ interface Reply {
   message_id: string;
   message: string;
   reply: string;
+  likes: number;
 }
 
-function LikeButton(props: { replyId: string }) {
+function LikeButton(props: { replyId: string, likes: number }) {
   type ButtonState = "like" | "unlike" | "none";
   const [buttonState, setButtonState] = useState<ButtonState>("none");
+  const [likeCount, setLikeCount] = useState(props.likes);
 
   useEffect(() => {
     if (buttonState !== "none") {
       fetch(`${process.env.NEXT_PUBLIC_API_URL}/${buttonState}/${props.replyId}`, {
         method: "POST",
       });
+      
+      if (buttonState === "like") {
+        setLikeCount((count) => count + 1);
+      } else if (buttonState === "unlike") {
+        setLikeCount((count) => count - 1);
+      }
     }
   }, [buttonState])
 
   if (buttonState === "like") {
     return (
-      <IconButton onClick={() => { setButtonState("unlike"); }}>
-        <FavoriteIcon sx={{ color: "orangered" }} />
-      </IconButton>
+      <>
+        <IconButton onClick={() => { setButtonState("unlike"); }}>
+          <FavoriteIcon sx={{ color: "orangered" }} />
+        </IconButton>
+        <Typography variant="subtitle1">
+          {likeCount}
+        </Typography>
+      </>
     );
   }
 
   return (
-    <IconButton onClick={() => { setButtonState("like"); }}>
-      <FavoriteBorderIcon sx={{ color: "whitesmoke" }} />
-    </IconButton>
+    <>
+      <IconButton onClick={() => { setButtonState("like"); }}>
+        <FavoriteBorderIcon sx={{ color: "whitesmoke" }} />
+      </IconButton>
+      <Typography variant="subtitle1">
+        {likeCount}
+      </Typography>
+    </>
   );
 }
 
@@ -98,8 +116,12 @@ function ReplySection(props: { isLoading: boolean, error: any, data: Reply[] | u
             <Typography variant="body2">
               {x.reply}
             </Typography>
-            <Box display="flex" justifyContent="flex-end">
-              <LikeButton replyId={x.id} />
+            <Box 
+              display="flex" 
+              justifyContent="flex-end"
+              alignItems="center"
+            >
+              <LikeButton replyId={x.id} likes={x.likes} />
             </Box>
           </Box>
         )
