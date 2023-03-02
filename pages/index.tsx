@@ -7,8 +7,10 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { useQuery } from 'react-query';
 import { DateTime } from "luxon";
 import Link from 'next/link';
-import { Skeleton } from '@mui/material';
 import Head from "next/head";
+import Fab from "@mui/material/Fab";
+import Skeleton from "@mui/material/Skeleton";
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 
 interface Reply {
   id: string;
@@ -180,6 +182,17 @@ export default function Home() {
           <ReplySection isLoading={isLoading} error={error as string} data={data} />
         </Box>
       </form>
+      <Fab
+        sx={{
+          position: "fixed",
+            bottom: (theme) => theme.spacing(2),
+            right: (theme) => theme.spacing(5)
+        }}
+        color="primary"
+        onClick={() => { window.scrollTo({ top: 0, behavior: "smooth" }) }}
+      >
+        <ArrowUpwardIcon />
+      </Fab>
     </>
   )
 }

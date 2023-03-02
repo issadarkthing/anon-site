@@ -11,6 +11,8 @@ import { GetServerSideProps } from "next";
 import Link from "next/link";
 import Skeleton from "@mui/material/Skeleton";
 import Head from "next/head";
+import Fab from "@mui/material/Fab";
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   //@ts-ignore
@@ -252,6 +254,17 @@ export default function Admin() {
         error={error} 
         data={data} 
       />
+      <Fab
+        sx={{
+          position: "fixed",
+            bottom: (theme) => theme.spacing(2),
+            right: (theme) => theme.spacing(5)
+        }}
+        color="primary"
+        onClick={() => { window.scrollTo({ top: 0, behavior: "smooth" }) }}
+      >
+        <ArrowUpwardIcon />
+      </Fab>
   </>
   )
 }
