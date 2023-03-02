@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { useEffect, useRef, useState } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
-import { useQuery } from 'react-query';
+import { useQuery, QueryObserverBaseResult } from 'react-query';
 import { DateTime } from "luxon";
 import Link from 'next/link';
 import Head from "next/head";
@@ -24,26 +24,48 @@ interface Reply {
   likes: number;
 }
 
-function LikeButton(props: { replyId: string, likes: number }) {
+function LikeButton(props: { 
+  replyId: string, 
+  likes: number, 
+}) {
   type ButtonState = "like" | "unlike" | "none";
   const [buttonState, setButtonState] = useState<ButtonState>("none");
+  const [buttonView, setButtonView] = useState<ButtonState>("none");
   const [likeCount, setLikeCount] = useState(props.likes);
+
+  useEffect(() => {
+    const likedItems: number[] = JSON.parse(localStorage.getItem("likes") || "[]");
+    const isLiked = likedItems.includes(Number(props.replyId));
+
+    if (isLiked) {
+      setButtonView("like");
+    }
+  }, [props.replyId]);
 
   useEffect(() => {
     if (buttonState !== "none") {
       fetch(`${process.env.NEXT_PUBLIC_API_URL}/${buttonState}/${props.replyId}`, {
         method: "POST",
       });
+
+      let likedItems: number[] = JSON.parse(localStorage.getItem("likes") || "[]");
       
       if (buttonState === "like") {
         setLikeCount((count) => count + 1);
+        likedItems.push(Number(props.replyId));
+        setButtonView("like");
+
       } else if (buttonState === "unlike") {
         setLikeCount((count) => count - 1);
+        likedItems = likedItems.filter(x => x !== Number(props.replyId));
+        setButtonView("unlike");
       }
-    }
-  }, [buttonState])
 
-  if (buttonState === "like") {
+      localStorage.setItem("likes", JSON.stringify(likedItems));
+    }
+  }, [props.replyId, buttonState])
+
+  if (buttonView === "like") {
     return (
       <>
         <IconButton onClick={() => { setButtonState("unlike"); }}>
@@ -148,7 +170,7 @@ export default function Home() {
   const [charCount, setCharCount] = useState(0);
   const [loading, setLoading] = useState(false);
 
-  const { isLoading, error, data } = useQuery<Reply[]>("replyData", async () => {
+  const { isLoading, error, data, refetch } = useQuery<Reply[]>("replyData", async () => {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/replies`);
 
     if (!res.ok) {
