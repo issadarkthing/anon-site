@@ -170,7 +170,7 @@ export default function Home() {
   const [charCount, setCharCount] = useState(0);
   const [loading, setLoading] = useState(false);
 
-  const { isLoading, error, data, refetch } = useQuery<Reply[]>("replyData", async () => {
+  const { isLoading, error, data } = useQuery<Reply[]>("replyData", async () => {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/replies`);
 
     if (!res.ok) {
