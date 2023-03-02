@@ -2,7 +2,7 @@ import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useQuery } from 'react-query';
 import { DateTime } from "luxon";
@@ -11,6 +11,9 @@ import Head from "next/head";
 import Fab from "@mui/material/Fab";
 import Skeleton from "@mui/material/Skeleton";
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import IconButton from "@mui/material/IconButton";
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
 interface Reply {
   id: string;
@@ -18,6 +21,33 @@ interface Reply {
   message_id: string;
   message: string;
   reply: string;
+}
+
+function LikeButton(props: { replyId: string }) {
+  type ButtonState = "like" | "unlike" | "none";
+  const [buttonState, setButtonState] = useState<ButtonState>("none");
+
+  useEffect(() => {
+    if (buttonState !== "none") {
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/${buttonState}/${props.replyId}`, {
+        method: "POST",
+      });
+    }
+  }, [buttonState])
+
+  if (buttonState === "like") {
+    return (
+      <IconButton onClick={() => { setButtonState("unlike"); }}>
+        <FavoriteIcon sx={{ color: "orangered" }} />
+      </IconButton>
+    );
+  }
+
+  return (
+    <IconButton onClick={() => { setButtonState("like"); }}>
+      <FavoriteBorderIcon sx={{ color: "whitesmoke" }} />
+    </IconButton>
+  );
 }
 
 function ReplySection(props: { isLoading: boolean, error: any, data: Reply[] | undefined }) {
@@ -37,6 +67,7 @@ function ReplySection(props: { isLoading: boolean, error: any, data: Reply[] | u
       </>
     )
   }
+
 
   return (
     <>
@@ -67,6 +98,9 @@ function ReplySection(props: { isLoading: boolean, error: any, data: Reply[] | u
             <Typography variant="body2">
               {x.reply}
             </Typography>
+            <Box display="flex" justifyContent="flex-end">
+              <LikeButton replyId={x.id} />
+            </Box>
           </Box>
         )
       })}
