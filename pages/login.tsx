@@ -15,6 +15,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   //@ts-ignore
   const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
   const token = context.req.cookies.token;
+  const username = context.req.cookies.username;
 
   if (!token) {
     return { 
@@ -22,9 +23,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
 
+
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/authenticate`, {
-      method: "POST",
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/authenticate/${username}`, {
       headers: {
         token,
       }
@@ -39,7 +40,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return {
       props: {},
       redirect: {
-        destination: "/admin",
+        destination: `/home/${username}`,
         permanent: false,
       }
     }
@@ -87,7 +88,9 @@ export default function Login() {
 
     if (res.ok) {
       setStatus("Login successfully");
-      cookie.set("token", await res.json());
+      const data = await res.json();
+      cookie.set("username", username);
+      cookie.set("token", data.token);
       router.push(`/home/${username}`);
 
     } else {
