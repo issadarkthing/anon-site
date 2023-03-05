@@ -14,10 +14,53 @@ import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import IconButton from "@mui/material/IconButton";
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import { useRouter } from "next/router";
 import Avatar from "@mui/material/Avatar";
 import { avatarSize, stringAvatar } from "@/utils/utils"
 import { StatData, User } from "./home/[username]";
+import { GetServerSideProps } from "next";
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  //@ts-ignore
+  const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+  const username = context.params?.username;
+
+  if (!username) {
+    return { 
+      props: {},
+      redirect: {
+        destination: "/",
+        permanent: false,
+      }
+    };
+  }
+
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/${username}`);
+
+    if (res.status !== 200) {
+      return { 
+        redirect: {
+          destination: "/404",
+          permanent: false,
+        }
+      };
+    }
+
+    return {
+      props: { 
+        user: await res.json(),
+      },
+    }
+  } catch {
+    return {
+      props: {},
+      redirect: {
+        destination: "/500",
+        permanent: false,
+      }
+    }
+  }
+}
 
 interface Reply {
   id: string;
@@ -168,27 +211,15 @@ export function delayAsync<T>(cb: () => Promise<T>, delay: number) {
   }
 }
 
-export default function Home() {
+export default function Home(props: { user: User }) {
   const CHARACTER_LIMIT = 256;
   const messageRef = useRef<HTMLInputElement>();
   const [sendStatus, setSendStatus] = useState("");
   const [charCount, setCharCount] = useState(0);
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
-  const { username } = router.query;
-  const userData = useQuery<User>("userData", async () => {
-    if (!username) return;
+  const username = props.user.username;
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/${username}`);
-
-    if (!res.ok) {
-      throw new Error(await res.text());
-    } else {
-      return res.json();
-    }
-  });
-
-  const { isLoading, error, data, refetch } = useQuery<Reply[]>("replyData", async () => {
+  const { isLoading, error, data } = useQuery<Reply[]>("replyData", async () => {
     if (!username) return;
 
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/${username}/replies`);
@@ -203,10 +234,6 @@ export default function Home() {
   const replies = data?.filter(x => !!x.reply).length;
   const likes = data?.reduce((acc, v) => acc + v.likes, 0);
 
-  useEffect(() => {
-    userData.refetch();
-    refetch();
-  }, [username])
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -268,7 +295,7 @@ export default function Home() {
           {username}
         </Typography>
         <Typography variant="body1">
-          {userData.data?.description}
+          {props.user.description}
         </Typography>
       </Box>
       <form onSubmit={onSubmit}>
