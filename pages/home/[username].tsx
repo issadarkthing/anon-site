@@ -102,7 +102,7 @@ function ReplySection(props: {
 
   const refetch = props.refetch;
 
-  const ReplyButton = (props: { isReplied: boolean, message: Message }) => {
+  const ReplyButton = (props: { hidden: boolean, message: Message }) => {
     const CHARACTER_LIMIT = 2560;
     const messageRef = useRef<HTMLInputElement>();
     const [charCount, setCharCount] = useState(0);
@@ -110,7 +110,7 @@ function ReplySection(props: {
     const [loading, setLoading] = useState(false);
     const [status, setStatus] = useState("");
 
-    if (props.isReplied) return <></>;
+    if (props.hidden) return null;
 
     const onSubmit = async (e: React.FormEvent) => {
       e.preventDefault();
@@ -188,6 +188,24 @@ function ReplySection(props: {
     );
   }
 
+  const Like = (props: { likes: number, hidden: boolean }) => {
+    if (props.hidden) return null;
+
+    return (
+      <Box
+        display="flex"
+        justifyContent="flex-end"
+        gap={1}
+        alignItems="center"
+      >
+        <FavoriteBorderIcon sx={{ color: "whitesmoke" }} />
+        <Typography variant="subtitle1">
+          {props.likes}
+        </Typography>
+      </Box>
+    )
+  }
+
   return (
     <>
       {props.data.map(x => {
@@ -217,18 +235,8 @@ function ReplySection(props: {
             <Typography variant="body2">
               {x.reply}
             </Typography>
-            <ReplyButton isReplied={x.reply !== null} message={x} />
-            <Box
-              display="flex"
-              justifyContent="flex-end"
-              gap={1}
-              alignItems="center"
-            >
-              <FavoriteBorderIcon sx={{ color: "whitesmoke" }} />
-              <Typography variant="subtitle1">
-                {x.likes}
-              </Typography>
-            </Box>
+            <ReplyButton hidden={x.reply !== null} message={x} />
+            <Like likes={x.likes} hidden={x.reply === null} />
           </Box>
         )
       })}

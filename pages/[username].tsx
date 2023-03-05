@@ -200,7 +200,6 @@ export default function Home() {
     }
   });
 
-  const messages = data?.length;
   const replies = data?.filter(x => !!x.reply).length;
   const likes = data?.reduce((acc, v) => acc + v.likes, 0);
 
@@ -261,7 +260,6 @@ export default function Home() {
         paddingRight="30px"
       >
         {username ? <Avatar {...stringAvatar(username as string)} /> : <Avatar sx={{ ...avatarSize }} />}
-        <StatData title="Messages" value={messages} />
         <StatData title="Replies" value={replies} />
         <StatData title="Likes" value={likes} />
       </Box>
