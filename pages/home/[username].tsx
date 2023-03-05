@@ -66,6 +66,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 interface User {
   username: string;
+  description: string;
   time: string;
 }
 
@@ -314,7 +315,7 @@ export default function Home(props: { username: string }) {
           {username}
         </Typography>
         <Typography variant="body1">
-          Hey I'm the developer
+          {userRequest.data?.description}
         </Typography>
       </Box>
       <ReplySection 
