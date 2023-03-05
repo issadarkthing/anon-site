@@ -63,6 +63,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 }
 
+interface User {
+  username: string;
+  time: string;
+}
+
 interface Message {
   id: number;
   message: string;
@@ -232,6 +237,15 @@ function ReplySection(props: {
 export default function Home(props: { username: string }) {
   const username = props.username;
   const token = cookie.get("token")!;
+  const userRequest = useQuery<User>("userData", async () => {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/${username}`);
+
+    if (!res.ok) {
+      throw new Error(await res.text());
+    } else {
+      return res.json();
+    }
+  });
 
   let { 
     isLoading, 
@@ -294,9 +308,14 @@ export default function Home(props: { username: string }) {
         <StatData title="Replies" value={replies} />
         <StatData title="Likes" value={likes} />
       </Box>
-      <Typography variant="body1">
-        Hey I'm the developer
-      </Typography>
+      <Box>
+        <Typography variant="h6">
+          {username}
+        </Typography>
+        <Typography variant="body1">
+          Hey I'm the developer
+        </Typography>
+      </Box>
       <ReplySection 
         refetch={refetch} 
         isLoading={isLoading} 
