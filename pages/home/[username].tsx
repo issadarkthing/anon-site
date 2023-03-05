@@ -15,6 +15,7 @@ import Fab from "@mui/material/Fab";
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import Avatar from "@mui/material/Avatar";
+import { stringAvatar } from "@/utils/utils";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   //@ts-ignore
@@ -303,7 +304,7 @@ export default function Home(props: { username: string }) {
         alignItems="center"
         paddingRight="30px"
       >
-        <Avatar sx={{ height: "80px", width: "80px" }}>H</Avatar>
+        <Avatar {...stringAvatar(username)} />
         <StatData title="Messages" value={messages} />
         <StatData title="Replies" value={replies} />
         <StatData title="Likes" value={likes} />
