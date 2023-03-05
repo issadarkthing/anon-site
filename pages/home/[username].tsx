@@ -13,6 +13,8 @@ import Skeleton from "@mui/material/Skeleton";
 import Head from "next/head";
 import Fab from "@mui/material/Fab";
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import Avatar from "@mui/material/Avatar";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   //@ts-ignore
@@ -67,6 +69,7 @@ interface Message {
   message: string;
   reply: string;
   reply_time: string;
+  likes: number;
   message_time: string;
 }
 
@@ -209,6 +212,17 @@ function ReplySection(props: {
               {x.reply}
             </Typography>
             <ReplyButton isReplied={x.reply !== null} message={x} />
+            <Box
+              display="flex"
+              justifyContent="flex-end"
+              gap={1}
+              alignItems="center"
+            >
+              <FavoriteBorderIcon sx={{ color: "whitesmoke" }} />
+              <Typography variant="subtitle1">
+                {x.likes}
+              </Typography>
+            </Box>
           </Box>
         )
       })}
@@ -248,6 +262,7 @@ export default function Admin() {
       <Typography variant="h4">
         <Link href={`/${username}`} style={{ textDecoration: "none", color: "inherit" }}>📨 Anon Messaging</Link>
       </Typography>
+      <Avatar sx={{ height: "50px", width: "50px" }}>H</Avatar>
       <Typography variant="body1">
         Welcome back raziman! Here are few messages for you to respond to.
       </Typography>
