@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { useEffect, useRef, useState } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
-import { useMutation, UseMutationResult, useQuery } from 'react-query';
+import { useQuery } from 'react-query';
 import { DateTime } from "luxon";
 import Link from 'next/link';
 import Head from "next/head";
