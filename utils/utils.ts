@@ -35,12 +35,16 @@ function stringToColor(str: string) {
   return color;
 }
 
+export const avatarSize = {
+  height: "80px",
+  width: "80px",
+}
+
 export function stringAvatar(name: string) {
   return {
     sx: {
       bgcolor: stringToColor(name),
-      height: "80px",
-      width: "80px",
+      ...avatarSize,
     },
     children: `${name.split(' ')[0][0]}`,
   };

@@ -6,7 +6,7 @@ import styles from "@/styles/Home.module.css";
 import Box from '@mui/material/Box';
 import { Analytics } from "@vercel/analytics/react";
 
-const queryClient = new QueryClient();
+export const queryClient = new QueryClient();
 
 const theme = createTheme({
   typography: {

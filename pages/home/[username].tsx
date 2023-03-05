@@ -64,7 +64,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 }
 
-interface User {
+export interface User {
   username: string;
   description: string;
   time: string;
@@ -236,6 +236,25 @@ function ReplySection(props: {
   )
 }
 
+
+export const StatData = (props: { title: string, value?: number }) => {
+  return (
+    <Box 
+      display="flex" 
+      flexDirection="column" 
+    >
+      <Box display="flex" justifyContent="center">
+        <Typography variant="body1">
+          {props.value}
+        </Typography>
+      </Box>
+      <Typography variant="body2">
+        {props.title}
+      </Typography>
+    </Box>
+  )
+}
+
 export default function Home(props: { username: string }) {
   const username = props.username;
   const token = cookie.get("token")!;
@@ -271,24 +290,6 @@ export default function Home(props: { username: string }) {
   const messages = data?.length;
   const replies = data?.filter(x => !!x.reply).length;
   const likes = data?.reduce((acc, v) => acc + v.likes, 0);
-
-  const StatData = (props: { title: string, value?: number }) => {
-    return (
-      <Box 
-        display="flex" 
-        flexDirection="column" 
-      >
-        <Box display="flex" justifyContent="center">
-          <Typography variant="body1">
-            {props.value}
-          </Typography>
-        </Box>
-        <Typography variant="body2">
-          {props.title}
-        </Typography>
-      </Box>
-    )
-  }
 
   return (
     <>

@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { useEffect, useRef, useState } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
-import { useQuery } from 'react-query';
+import { useMutation, UseMutationResult, useQuery } from 'react-query';
 import { DateTime } from "luxon";
 import Link from 'next/link';
 import Head from "next/head";
@@ -15,6 +15,9 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import IconButton from "@mui/material/IconButton";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useRouter } from "next/router";
+import Avatar from "@mui/material/Avatar";
+import { avatarSize, stringAvatar } from "@/utils/utils"
+import { StatData, User } from "./home/[username]";
 
 interface Reply {
   id: string;
@@ -27,7 +30,7 @@ interface Reply {
 
 function LikeButton(props: { 
   replyId: string, 
-  likes: number, 
+  likes: number,
 }) {
   type ButtonState = "like" | "unlike" | "none";
   const [buttonState, setButtonState] = useState<ButtonState>("none");
@@ -48,6 +51,7 @@ function LikeButton(props: {
       fetch(`${process.env.NEXT_PUBLIC_API_URL}/${buttonState}/${props.replyId}`, {
         method: "POST",
       });
+
 
       let likedItems: number[] = JSON.parse(localStorage.getItem("likes") || "[]");
       
@@ -172,6 +176,17 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { username } = router.query;
+  const userData = useQuery<User>("userData", async () => {
+    if (!username) return;
+
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/${username}`);
+
+    if (!res.ok) {
+      throw new Error(await res.text());
+    } else {
+      return res.json();
+    }
+  });
 
   const { isLoading, error, data, refetch } = useQuery<Reply[]>("replyData", async () => {
     if (!username) return;
@@ -185,7 +200,12 @@ export default function Home() {
     }
   });
 
+  const messages = data?.length;
+  const replies = data?.filter(x => !!x.reply).length;
+  const likes = data?.reduce((acc, v) => acc + v.likes, 0);
+
   useEffect(() => {
+    userData.refetch();
     refetch();
   }, [username])
 
@@ -234,6 +254,25 @@ export default function Home() {
         Anonymous messaging 
         created by <a style={{ color: "lightblue" }} href="https://issadarkthing.com">issadarkthing</a>
       </Typography>
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        paddingRight="30px"
+      >
+        {username ? <Avatar {...stringAvatar(username as string)} /> : <Avatar sx={{ ...avatarSize }} />}
+        <StatData title="Messages" value={messages} />
+        <StatData title="Replies" value={replies} />
+        <StatData title="Likes" value={likes} />
+      </Box>
+      <Box>
+        <Typography variant="h6">
+          {username}
+        </Typography>
+        <Typography variant="body1">
+          {userData.data?.description}
+        </Typography>
+      </Box>
       <form onSubmit={onSubmit}>
         <Box 
           display="flex"
