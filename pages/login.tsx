@@ -10,6 +10,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import Head from "next/head";
 
+
 export const getServerSideProps: GetServerSideProps = async (context) => {
   //@ts-ignore
   const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
@@ -56,6 +57,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 export default function Login() {
   const router = useRouter();
+  const usernameRef = useRef<HTMLInputElement>();
   const passwordRef = useRef<HTMLInputElement>();
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState("");
@@ -63,25 +65,30 @@ export default function Login() {
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const token = passwordRef.current?.value;
+    const username = usernameRef.current?.value;
+    const password = passwordRef.current?.value;
 
-    if (!token) {
+    if (!username || !password) {
       return;
     }
 
     setLoading(true);
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/authenticate`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
       method: "POST",
       headers: {
-        token,
-      }
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username,
+        password
+      })
     });
     setLoading(false);
 
     if (res.ok) {
       setStatus("Login successfully");
-      cookie.set("token", token);
-      router.push("/admin");
+      cookie.set("token", await res.json());
+      router.push(`/home/${username}`);
 
     } else {
 
@@ -119,11 +126,24 @@ export default function Login() {
           gap="20px"
         >
           <TextField
+            id="username"
+            label="username"
+            fullWidth
+            focused
+            inputRef={usernameRef}
+            InputProps={{ 
+              sx: { color: "whitesmoke" } 
+            }}
+            FormHelperTextProps={{
+              sx: { color: "whitesmoke" }
+            }}
+          />
+          <TextField
             id="password"
             label="password"
+            focused
             fullWidth
             type="password"
-            focused
             inputRef={passwordRef}
             InputProps={{ 
               sx: { color: "whitesmoke" } 
