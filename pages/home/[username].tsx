@@ -42,7 +42,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
     if (res.status !== 200) {
       return { 
-        props: {},
         redirect: {
           destination: "/login",
           permanent: false,
@@ -51,7 +50,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     }
 
     return {
-      props: {},
+      props: { username },
     }
   } catch {
     return {
@@ -230,8 +229,8 @@ function ReplySection(props: {
   )
 }
 
-export default function Admin() {
-  const username = cookie.get("username")!;
+export default function Home(props: { username: string }) {
+  const username = props.username;
   const token = cookie.get("token")!;
 
   let { 
@@ -253,6 +252,28 @@ export default function Admin() {
     }
   });
 
+  const messages = data?.length;
+  const replies = data?.filter(x => !!x.reply).length;
+  const likes = data?.reduce((acc, v) => acc + v.likes, 0);
+
+  const StatData = (props: { title: string, value?: number }) => {
+    return (
+      <Box 
+        display="flex" 
+        flexDirection="column" 
+      >
+        <Box display="flex" justifyContent="center">
+          <Typography variant="body1">
+            {props.value}
+          </Typography>
+        </Box>
+        <Typography variant="body2">
+          {props.title}
+        </Typography>
+      </Box>
+    )
+  }
+
   return (
     <>
       <Head>
@@ -262,9 +283,19 @@ export default function Admin() {
       <Typography variant="h4">
         <Link href={`/${username}`} style={{ textDecoration: "none", color: "inherit" }}>📨 Anon Messaging</Link>
       </Typography>
-      <Avatar sx={{ height: "50px", width: "50px" }}>H</Avatar>
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        paddingRight="30px"
+      >
+        <Avatar sx={{ height: "80px", width: "80px" }}>H</Avatar>
+        <StatData title="Messages" value={messages} />
+        <StatData title="Replies" value={replies} />
+        <StatData title="Likes" value={likes} />
+      </Box>
       <Typography variant="body1">
-        Welcome back raziman! Here are few messages for you to respond to.
+        Hey I'm the developer
       </Typography>
       <ReplySection 
         refetch={refetch} 
