@@ -246,7 +246,7 @@ export default function Admin() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <Typography variant="h4">
-        <Link href="/" style={{ textDecoration: "none", color: "inherit" }}>📨 Anon Messaging</Link>
+        <Link href={`/${username}`} style={{ textDecoration: "none", color: "inherit" }}>📨 Anon Messaging</Link>
       </Typography>
       <Typography variant="body1">
         Welcome back raziman! Here are few messages for you to respond to.

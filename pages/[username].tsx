@@ -199,7 +199,7 @@ export default function Home() {
     }
 
     setLoading(true);
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/${username}}/message`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/${username}/message`, {
       method: "POST",
       body: JSON.stringify({ message }),
       headers: {

@@ -17,7 +17,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const token = context.req.cookies.token;
   const username = context.req.cookies.username;
 
-  if (!token) {
+  if (!token || !username) {
     return { 
       props: {},
     };
