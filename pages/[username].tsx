@@ -18,6 +18,7 @@ import Avatar from "@mui/material/Avatar";
 import { avatarSize, stringAvatar } from "@/utils/utils"
 import { StatData, User } from "./home/[username]";
 import { GetServerSideProps } from "next";
+import { Header } from "@/components/Header";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   //@ts-ignore
@@ -274,11 +275,7 @@ export default function Home(props: { user: User }) {
         <title>Anon Messaging</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <Box display="flex" justifyContent="center">
-        <Typography variant="h4">
-          <Link href="/login" style={{ textDecoration: "none", color: "inherit" }}>📨 Anon Messaging</Link>
-        </Typography>
-      </Box>
+      <Header href="/login" />
       <Box
         display="flex"
         justifyContent="space-between"

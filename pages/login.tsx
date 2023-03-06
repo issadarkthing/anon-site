@@ -9,6 +9,7 @@ import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { Link } from "@/components/Link";
 import Head from "next/head";
+import { Header } from "@/components/Header";
 
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -113,13 +114,7 @@ export default function Login() {
         <title>Anon Messaging</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <Box display="flex" justifyContent="center">
-        <Typography variant="h4">
-          <Link href="/" style={{ color: "whitesmoke" }}>
-            📨 Anon Messaging
-          </Link>
-        </Typography>
-      </Box>
+      <Header href="/" />
       <Box display="flex" flexDirection="column">
         <Typography variant="h6">
           Welcome back!

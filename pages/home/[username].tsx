@@ -16,6 +16,7 @@ import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import Avatar from "@mui/material/Avatar";
 import { stringAvatar } from "@/utils/utils";
+import { Header } from "@/components/Header";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   //@ts-ignore
@@ -305,11 +306,7 @@ export default function Home(props: { username: string }) {
         <title>Anon Messaging</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <Box display="flex" justifyContent="center">
-        <Typography variant="h4">
-          <Link href={`/${username}`} style={{ textDecoration: "none", color: "inherit" }}>📨 Anon Messaging</Link>
-        </Typography>
-      </Box>
+      <Header href={`/${username}`} />
       <Box
         display="flex"
         justifyContent="space-between"

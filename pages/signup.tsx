@@ -7,6 +7,7 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
+import { Header } from "@/components/Header";
 
 export default function Signup() {
   const router = useRouter();
@@ -84,13 +85,7 @@ export default function Signup() {
         <title>Anon Messaging</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <Box display="flex" justifyContent="center">
-        <Typography variant="h4">
-          <Link href="/" style={{ color: "whitesmoke", textDecoration: "none" }}>
-            📨 Anon Messaging
-          </Link>
-        </Typography>
-      </Box>
+      <Header href="/" />
       <Box display="flex" flexDirection="column">
         <Typography variant="h6">
           Entering account creation mode. Something about to go down
