@@ -286,35 +286,32 @@ export default function Home(props: { user: User }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <Header href="/login" />
-      <Box display="flex" justifyContent="flex-end">
-        <IconButton 
-          size="large" 
-          onClick={() => { 
-            setToast("Link copied to clipboard");
-            const url = `${window.location.origin}/${username}`;
-            navigator.clipboard.writeText(url);
-          }}
-        >
-          <LinkIcon style={{ color: "white" }} />
-        </IconButton>
-      </Box>
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        paddingRight="30px"
-      >
-        {username ? <Avatar {...stringAvatar(username as string)} /> : <Avatar sx={{ ...avatarSize }} />}
-        <StatData title="Replies" value={replies} />
-        <StatData title="Likes" value={likes} />
-      </Box>
       <Box>
         <Typography variant="h6">
           {username}
+          <IconButton 
+            size="large" 
+            onClick={() => { 
+              setToast("Link copied to clipboard");
+              const url = `${window.location.origin}/${username}`;
+              navigator.clipboard.writeText(url);
+            }}
+          >
+            <LinkIcon style={{ color: "white" }} />
+          </IconButton>
         </Typography>
         <Typography gutterBottom variant="body1">
           {props.user.description}
         </Typography>
+      </Box>
+      <Box
+        display="flex"
+        justifyContent="space-around"
+        alignItems="center"
+        paddingRight="30px"
+      >
+        <StatData title="Replies" value={replies} />
+        <StatData title="Likes" value={likes} />
       </Box>
       <form onSubmit={onSubmit}>
         <Box 

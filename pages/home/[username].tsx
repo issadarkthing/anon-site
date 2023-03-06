@@ -317,36 +317,33 @@ export default function Home(props: { username: string }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <Header href={`/${username}`} />
-      <Box display="flex" justifyContent="flex-end">
-        <IconButton 
-          size="large" 
-          onClick={() => { 
-            setToast("Link copied to clipboard") 
-            const url = `${window.location.origin}/${username}`;
-            navigator.clipboard.writeText(url);
-          }}
-        >
-          <LinkIcon style={{ color: "white" }} />
-        </IconButton>
-      </Box>
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        paddingRight="30px"
-      >
-        <Avatar {...stringAvatar(username)} />
-        <StatData title="Messages" value={messages} />
-        <StatData title="Replies" value={replies} />
-        <StatData title="Likes" value={likes} />
-      </Box>
       <Box>
         <Typography variant="h6">
           {username}
+          <IconButton 
+            size="large" 
+            onClick={() => { 
+              setToast("Link copied to clipboard") 
+              const url = `${window.location.origin}/${username}`;
+              navigator.clipboard.writeText(url);
+            }}
+          >
+            <LinkIcon style={{ color: "white" }} />
+          </IconButton>
         </Typography>
         <Typography variant="body1">
           {userRequest.data?.description}
         </Typography>
+      </Box>
+      <Box
+        display="flex"
+        justifyContent="space-around"
+        alignItems="center"
+        paddingRight="30px"
+      >
+        <StatData title="Messages" value={messages} />
+        <StatData title="Replies" value={replies} />
+        <StatData title="Likes" value={likes} />
       </Box>
       <ReplySection 
         refetch={refetch} 
