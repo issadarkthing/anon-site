@@ -115,7 +115,7 @@ export default function Login() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <Header href="/" />
-      <Box display="flex" flexDirection="column">
+      <Box display="flex" flexDirection="column" gap="20px">
         <Typography variant="h6">
           Welcome back!
         </Typography>
