@@ -111,7 +111,7 @@ export default function Login() {
   return (
     <>
       <Head>
-        <title>Anon Messaging</title>
+        <title>anonmi</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <Header href="/" />

@@ -9,7 +9,7 @@ export function Header(props: { href?: string }) {
     <Box display="flex" justifyContent="center" alignItems="center" gap="7px">
       <img src="/anon.svg" alt="logo" style={{ width: "30px" }} /> <br />
       <Typography variant="h3" sx={{ fontFamily: "Comic Cat" }}>
-        anon.me
+        anonmi
       </Typography>
     </Box>
   );
