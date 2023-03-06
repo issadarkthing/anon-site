@@ -7,7 +7,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import cookie from "js-cookie";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
-import Link from "next/link";
+import { Link } from "@/components/Link";
 import Head from "next/head";
 
 
@@ -98,7 +98,7 @@ export default function Login() {
       if (res.status === 401) {
         setStatus("Please enter the correct password");
       } else {
-        setStatus("An error occured while logging in");
+        setStatus(await res.text());
       }
     }
 
@@ -113,15 +113,22 @@ export default function Login() {
         <title>Anon Messaging</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <Typography variant="h4">
-        <Link href="/" style={{ color: "whitesmoke", textDecoration: "none" }}>
-          📨 Anon Messaging
-        </Link>
-      </Typography>
-      <Typography variant="body1">
-        You are entering admin route 🚧 
-        <br /> Click <Link href="/" style={{ color: "lightblue" }}>here</Link> to return home
-      </Typography>
+      <Box display="flex" justifyContent="center">
+        <Typography variant="h4">
+          <Link href="/" style={{ color: "whitesmoke" }}>
+            📨 Anon Messaging
+          </Link>
+        </Typography>
+      </Box>
+      <Box display="flex" flexDirection="column">
+        <Typography variant="h6">
+          Welcome back!
+        </Typography>
+        <Typography variant="body1">
+          Before reading those awesome messages from your fans, let's get
+          yourself logged in.
+        </Typography>
+      </Box>
       <form onSubmit={onSubmit}>
         <Box 
           display="flex"
@@ -130,7 +137,7 @@ export default function Login() {
         >
           <TextField
             id="username"
-            label="username"
+            label="Username"
             fullWidth
             focused
             inputRef={usernameRef}
@@ -143,7 +150,7 @@ export default function Login() {
           />
           <TextField
             id="password"
-            label="password"
+            label="Password"
             focused
             fullWidth
             type="password"
@@ -156,11 +163,16 @@ export default function Login() {
             }}
           />
           <Button type="submit" variant="contained" >
-            {loading ? <CircularProgress sx={{ color: "whitesmoke" }} size={25} /> : "login"}
+            {loading ? <CircularProgress sx={{ color: "whitesmoke" }} size={25} /> : "log in"}
           </Button>
           <Typography variant="caption">{status}</Typography>
         </Box>
       </form>
+      <Box display="flex" justifyContent="center">
+        <Typography variant="subtitle1">
+          No account yet? <Link href="/signup">Sign up</Link>
+        </Typography>
+      </Box>
     </>
   )
 }

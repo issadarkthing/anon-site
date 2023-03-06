@@ -13,7 +13,7 @@ export function Link(props: {
       href={props.href}
       style={{
         color: "lightblue",
-        textDecoration: isHover ? "" : "none",
+        textDecoration: isHover ? "underline" : "none",
         ...props.style,
       }}
       onMouseEnter={() => { setIsHover(true) }}
