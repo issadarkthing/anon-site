@@ -20,7 +20,9 @@ export default function Home() {
         gap="90px"
       >
         <Typography variant="h5">
-          Send a message to the person you want anonymously.
+          Create an account or log in and share your profile. Receive anonymous
+          messages and reply to them individually. Not all messages should be
+          replied.
         </Typography>
         <Box
           display="flex"
