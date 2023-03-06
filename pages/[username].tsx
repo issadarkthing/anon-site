@@ -113,6 +113,7 @@ function LikeButton(props: {
     }
   }, [props.replyId, buttonState])
 
+
   if (buttonView === "like") {
     return (
       <>
@@ -263,7 +264,7 @@ export default function Home(props: { user: User }) {
       }
 
     } else {
-      setSendStatus("An error occured while sending your message");
+      setSendStatus(await res.text());
     }
   }
 
@@ -273,13 +274,11 @@ export default function Home(props: { user: User }) {
         <title>Anon Messaging</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <Typography variant="h4">
-        <Link href="/login" style={{ textDecoration: "none", color: "inherit" }}>📨 Anon Messaging</Link>
-      </Typography>
-      <Typography variant="subtitle1">
-        Anonymous messaging 
-        created by <a style={{ color: "lightblue" }} href="https://issadarkthing.com">issadarkthing</a>
-      </Typography>
+      <Box display="flex" justifyContent="center">
+        <Typography variant="h4">
+          <Link href="/login" style={{ textDecoration: "none", color: "inherit" }}>📨 Anon Messaging</Link>
+        </Typography>
+      </Box>
       <Box
         display="flex"
         justifyContent="space-between"
