@@ -9,6 +9,13 @@ export default function Document() {
           rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
         />
+        <link 
+          rel="preload" 
+          href="/fonts/comic_cat.otf"
+          as="font"
+          type="font/ttf"
+          crossOrigin=""
+        />
       </Head>
       <body>
         <Main />

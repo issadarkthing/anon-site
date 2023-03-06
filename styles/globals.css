@@ -95,3 +95,10 @@ body {
     color-scheme: dark;
   }
 }
+
+@font-face {
+  font-family: 'Comic Cat';
+  src: url('/fonts/comic_cat.otf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
