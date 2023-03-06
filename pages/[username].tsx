@@ -6,7 +6,6 @@ import { useEffect, useRef, useState } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useQuery } from 'react-query';
 import { DateTime } from "luxon";
-import Link from 'next/link';
 import Head from "next/head";
 import Fab from "@mui/material/Fab";
 import Skeleton from "@mui/material/Skeleton";
@@ -19,6 +18,8 @@ import { avatarSize, stringAvatar } from "@/utils/utils"
 import { StatData, User } from "./home/[username]";
 import { GetServerSideProps } from "next";
 import { Header } from "@/components/Header";
+import LinkIcon from '@mui/icons-material/Link';
+import Snackbar from "@mui/material/Snackbar";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   //@ts-ignore
@@ -219,6 +220,7 @@ export default function Home(props: { user: User }) {
   const [sendStatus, setSendStatus] = useState("");
   const [charCount, setCharCount] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [toast, setToast] = useState("");
   const username = props.user.username;
 
   const { isLoading, error, data } = useQuery<Reply[]>("replyData", async () => {
@@ -269,6 +271,14 @@ export default function Home(props: { user: User }) {
     }
   }
 
+  const handleClose = (event: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setToast("");
+  };
+
   return (
     <>
       <Head>
@@ -276,6 +286,18 @@ export default function Home(props: { user: User }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <Header href="/login" />
+      <Box display="flex" justifyContent="flex-end">
+        <IconButton 
+          size="large" 
+          onClick={() => { 
+            setToast("Link copied to clipboard");
+            const url = `${window.location.origin}/${username}`;
+            navigator.clipboard.writeText(url);
+          }}
+        >
+          <LinkIcon style={{ color: "white" }} />
+        </IconButton>
+      </Box>
       <Box
         display="flex"
         justifyContent="space-between"
@@ -290,7 +312,7 @@ export default function Home(props: { user: User }) {
         <Typography variant="h6">
           {username}
         </Typography>
-        <Typography variant="body1">
+        <Typography gutterBottom variant="body1">
           {props.user.description}
         </Typography>
       </Box>
@@ -328,6 +350,12 @@ export default function Home(props: { user: User }) {
           <ReplySection isLoading={isLoading} error={error as string} data={data} />
         </Box>
       </form>
+      <Snackbar
+        open={!!toast}
+        autoHideDuration={1000}
+        onClose={handleClose}
+        message={toast}
+      />
       <Fab
         sx={{
           position: "fixed",

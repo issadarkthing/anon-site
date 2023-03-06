@@ -8,7 +8,6 @@ import TextField from "@mui/material/TextField";
 import { useRef, useState } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 import { GetServerSideProps } from "next";
-import Link from "next/link";
 import Skeleton from "@mui/material/Skeleton";
 import Head from "next/head";
 import Fab from "@mui/material/Fab";
@@ -17,6 +16,9 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import Avatar from "@mui/material/Avatar";
 import { stringAvatar } from "@/utils/utils";
 import { Header } from "@/components/Header";
+import Snackbar from "@mui/material/Snackbar";
+import IconButton from "@mui/material/IconButton";
+import LinkIcon from '@mui/icons-material/Link';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   //@ts-ignore
@@ -267,6 +269,7 @@ export const StatData = (props: { title: string, value?: number }) => {
 export default function Home(props: { username: string }) {
   const username = props.username;
   const token = cookie.get("token")!;
+  const [toast, setToast] = useState("");
   const userRequest = useQuery<User>("userData", async () => {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/${username}`);
 
@@ -299,6 +302,13 @@ export default function Home(props: { username: string }) {
   const messages = data?.length;
   const replies = data?.filter(x => !!x.reply).length;
   const likes = data?.reduce((acc, v) => acc + v.likes, 0);
+  const handleClose = (event: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setToast("");
+  };
 
   return (
     <>
@@ -307,6 +317,18 @@ export default function Home(props: { username: string }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <Header href={`/${username}`} />
+      <Box display="flex" justifyContent="flex-end">
+        <IconButton 
+          size="large" 
+          onClick={() => { 
+            setToast("Link copied to clipboard") 
+            const url = `${window.location.origin}/${username}`;
+            navigator.clipboard.writeText(url);
+          }}
+        >
+          <LinkIcon style={{ color: "white" }} />
+        </IconButton>
+      </Box>
       <Box
         display="flex"
         justifyContent="space-between"
@@ -331,6 +353,12 @@ export default function Home(props: { username: string }) {
         isLoading={isLoading} 
         error={error} 
         data={data} 
+      />
+      <Snackbar
+        open={!!toast}
+        autoHideDuration={1000}
+        onClose={handleClose}
+        message={toast}
       />
       <Fab
         sx={{
