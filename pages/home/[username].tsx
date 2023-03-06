@@ -305,9 +305,11 @@ export default function Home(props: { username: string }) {
         <title>Anon Messaging</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <Typography variant="h4">
-        <Link href={`/${username}`} style={{ textDecoration: "none", color: "inherit" }}>📨 Anon Messaging</Link>
-      </Typography>
+      <Box display="flex" justifyContent="center">
+        <Typography variant="h4">
+          <Link href={`/${username}`} style={{ textDecoration: "none", color: "inherit" }}>📨 Anon Messaging</Link>
+        </Typography>
+      </Box>
       <Box
         display="flex"
         justifyContent="space-between"
