@@ -4,7 +4,6 @@ import { DateTime } from "luxon";
 import { useQuery } from "react-query";
 import cookie from "js-cookie";
 import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
 import { useRef, useState } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 import { GetServerSideProps } from "next";
@@ -20,6 +19,8 @@ import LinkIcon from '@mui/icons-material/Link';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { UserMenu, UserMenuItem } from "@/components/UserMenu";
 import { useRouter } from "next/router";
+import EditIcon from '@mui/icons-material/Edit';
+import { TextField } from "@/components/TextField";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   //@ts-ignore
@@ -109,7 +110,6 @@ function ReplySection(props: {
   const ReplyButton = (props: { hidden: boolean, message: Message }) => {
     const CHARACTER_LIMIT = 2560;
     const messageRef = useRef<HTMLInputElement>();
-    const [charCount, setCharCount] = useState(0);
     const [showInput, setShowInput] = useState(false);
     const [loading, setLoading] = useState(false);
     const [status, setStatus] = useState("");
@@ -148,7 +148,6 @@ function ReplySection(props: {
       }
 
       setShowInput(false);
-      setCharCount(0);
     }
 
     return (
@@ -161,23 +160,8 @@ function ReplySection(props: {
           {showInput && <TextField
             id="reply"
             label="Reply"
-            fullWidth
-            autoFocus
-            multiline
-            inputRef={messageRef}
-            inputProps={{
-              maxLength: CHARACTER_LIMIT
-            }}
-            InputProps={{ 
-              sx: { color: "whitesmoke" } 
-            }}
-            FormHelperTextProps={{
-              sx: { color: "whitesmoke" }
-            }}
-            onChange={(x) => {
-              setCharCount(x.target.value.length);
-            }}
-            helperText={`${charCount}/${CHARACTER_LIMIT}`}
+            ref={messageRef}
+            characterLimit={CHARACTER_LIMIT}
           />}
           <Button 
             fullWidth 
@@ -272,6 +256,7 @@ export default function Home(props: { username: string }) {
   const token = cookie.get("token")!;
   const router = useRouter();
   const [toast, setToast] = useState("");
+  const [isEdit, setIsEdit] = useState(false);
   const userRequest = useQuery<User>("userData", async () => {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/${username}`);
 
@@ -324,6 +309,10 @@ export default function Home(props: { username: string }) {
     router.push("/");
   }
 
+  const handleEdit = () => {
+    setIsEdit(true);
+  }
+
   return (
     <>
       <Head>
@@ -343,6 +332,11 @@ export default function Home(props: { username: string }) {
             </IconButton>
           </Typography>
           <UserMenu>
+            <UserMenuItem 
+              onClick={handleEdit} 
+              Icon={EditIcon} 
+              text="Edit profile" 
+            />
             <UserMenuItem 
               onClick={handleCopyClipboard} 
               Icon={LinkIcon} 
