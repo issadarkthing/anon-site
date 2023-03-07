@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { Link } from "./Link";
-
+import { colors } from "@/utils/constants";
 
 
 export function Header(props: { href?: string }) {
@@ -9,7 +9,7 @@ export function Header(props: { href?: string }) {
     <Box display="flex" justifyContent="center" alignItems="center" gap="7px">
       <img src="/anon.svg" alt="logo" style={{ width: "30px" }} /> <br />
       <Typography display="inline" variant="h3" sx={{ fontFamily: "Comic Cat" }}>
-        anon<span style={{ color: "#208dd4" }}>mi</span>
+        anon<span style={{ color: colors.accentColor }}>mi</span>
       </Typography>
     </Box>
   );
