@@ -21,7 +21,6 @@ import { UserMenu, UserMenuItem } from "@/components/UserMenu";
 import { useRouter } from "next/router";
 import EditIcon from '@mui/icons-material/Edit';
 import { TextField } from "@/components/TextField";
-import Modal from "@mui/material/Modal";
 import { colors } from "@/utils/constants";
 import { ProfileEditModal } from "@/components/ProfileEditModal";
 
@@ -255,7 +254,7 @@ export const StatData = (props: { title: string, value?: number }) => {
 }
 
 export default function Home(props: { username: string }) {
-  const username = props.username;
+  const [username, setUsername] = useState(props.username);
   const token = cookie.get("token")!;
   const router = useRouter();
   const [toast, setToast] = useState("");
@@ -331,9 +330,11 @@ export default function Home(props: { username: string }) {
         onClose={() => { 
           setIsEdit(false);
         }} 
-        onSubmit={() => {
+        onSubmit={(user) => {
           setIsEdit(false);
           setToast("Profile updated successfully");
+          cookie.set("username", user.username);
+          setUsername(user.username);
           userRequest.refetch();
         }}
       />

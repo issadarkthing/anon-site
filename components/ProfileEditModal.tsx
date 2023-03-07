@@ -12,7 +12,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 export function ProfileEditModal(props: { 
   open: boolean, 
   onClose: () => void,
-  onSubmit: () => void,
+  onSubmit: (user: { username: string, description: string }) => void,
   username: string,
   description: string,
 }) {
@@ -47,7 +47,7 @@ export function ProfileEditModal(props: {
 
     if (res.ok) {
       setHelperText("Edited successfully");
-      props.onSubmit();
+      props.onSubmit({ username, description });
       setHelperText("");
     } else {
       setHelperText(await res.text());
@@ -96,6 +96,7 @@ export function ProfileEditModal(props: {
           <TextField
             id="username"
             label="Username"
+            multiline={false}
             characterLimit={USERNAME_CHAR_LIMIT}
             defaultValue={props.username}
             ref={usernameRef}
