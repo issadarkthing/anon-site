@@ -5,7 +5,7 @@ type TextFieldProps = {
   characterLimit: number;
 } & BaseTextFieldProps;
 
-export const TextField = React.forwardRef((props: TextFieldProps, ref) => {
+export const TextField = React.forwardRef(function TextField(props: TextFieldProps, ref) {
   const [charCount, setCharCount] = useState((props.defaultValue as string).length);
 
   return (

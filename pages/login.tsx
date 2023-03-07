@@ -120,7 +120,7 @@ export default function Login() {
           Welcome back!
         </Typography>
         <Typography variant="body1">
-          Before reading those awesome messages from your fans, let's get
+          Before reading those awesome messages from your fans, let&apos;s get
           yourself logged in.
         </Typography>
       </Box>
