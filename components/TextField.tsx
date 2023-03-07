@@ -6,12 +6,10 @@ type TextFieldProps = {
 } & BaseTextFieldProps;
 
 export const TextField = React.forwardRef((props: TextFieldProps, ref) => {
-  const [charCount, setCharCount] = useState(0);
+  const [charCount, setCharCount] = useState((props.defaultValue as string).length);
 
   return (
     <BaseTextField
-      {...props}
-      label="Message"
       fullWidth
       focused
       multiline
@@ -30,6 +28,7 @@ export const TextField = React.forwardRef((props: TextFieldProps, ref) => {
         setCharCount(x.target.value.length);
       }}
       helperText={`${charCount}/${props.characterLimit}`}
+      {...props}
     />
   )
 })

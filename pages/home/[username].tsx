@@ -21,6 +21,9 @@ import { UserMenu, UserMenuItem } from "@/components/UserMenu";
 import { useRouter } from "next/router";
 import EditIcon from '@mui/icons-material/Edit';
 import { TextField } from "@/components/TextField";
+import Modal from "@mui/material/Modal";
+import { colors } from "@/utils/constants";
+import { ProfileEditModal } from "@/components/ProfileEditModal";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   //@ts-ignore
@@ -206,12 +209,12 @@ function ReplySection(props: {
             flexDirection="column"
             gap="1px"
             style={{ 
-              backgroundColor: "#20262e", 
+              backgroundColor: colors.backgroundColor, 
               padding: 15,
               borderRadius: "5px",
               borderStyle: "solid",
               borderWidth: "2px",
-              borderColor: "#ffffff4d"
+              borderColor: colors.borderColor,
             }}
           >
             <Typography color="#ffffff9d" variant="caption">
@@ -313,6 +316,7 @@ export default function Home(props: { username: string }) {
     setIsEdit(true);
   }
 
+
   return (
     <>
       <Head>
@@ -320,6 +324,19 @@ export default function Home(props: { username: string }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <Header href={`/${username}`} />
+      <ProfileEditModal 
+        username={username}
+        description={userRequest.data?.description || ""}
+        open={isEdit} 
+        onClose={() => { 
+          setIsEdit(false);
+        }} 
+        onSubmit={() => {
+          setIsEdit(false);
+          setToast("Profile updated successfully");
+          userRequest.refetch();
+        }}
+      />
       <Box>
         <Box display="flex">
           <Typography variant="h6">
