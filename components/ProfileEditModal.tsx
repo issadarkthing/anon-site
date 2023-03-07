@@ -75,7 +75,7 @@ export function ProfileEditModal(props: {
             borderColor: colors.borderColor,
             borderRadius: "5px",
             boxShadow: 24,
-            padding: 4,
+            padding: 3,
             [theme.breakpoints.up("lg")]: {
               width: "40vw",
             },
@@ -90,6 +90,9 @@ export function ProfileEditModal(props: {
             },
           })}
         >
+          <Typography variant="h6">
+            Profile edit
+          </Typography>
           <TextField
             id="username"
             label="Username"
