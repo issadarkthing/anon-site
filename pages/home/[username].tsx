@@ -13,12 +13,13 @@ import Head from "next/head";
 import Fab from "@mui/material/Fab";
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import Avatar from "@mui/material/Avatar";
-import { stringAvatar } from "@/utils/utils";
 import { Header } from "@/components/Header";
 import Snackbar from "@mui/material/Snackbar";
 import IconButton from "@mui/material/IconButton";
 import LinkIcon from '@mui/icons-material/Link';
+import LogoutIcon from '@mui/icons-material/Logout';
+import { UserMenu, UserMenuItem } from "@/components/UserMenu";
+import { useRouter } from "next/router";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   //@ts-ignore
@@ -269,6 +270,7 @@ export const StatData = (props: { title: string, value?: number }) => {
 export default function Home(props: { username: string }) {
   const username = props.username;
   const token = cookie.get("token")!;
+  const router = useRouter();
   const [toast, setToast] = useState("");
   const userRequest = useQuery<User>("userData", async () => {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/${username}`);
@@ -308,7 +310,19 @@ export default function Home(props: { username: string }) {
     }
 
     setToast("");
-  };
+  }
+
+  const handleCopyClipboard = () => {
+    setToast("Link copied to clipboard") 
+    const url = `${window.location.origin}/${username}`;
+    navigator.clipboard.writeText(url);
+  }
+
+  const handleLogout = () => {
+    cookie.remove("token");
+    cookie.remove("username");
+    router.push("/");
+  }
 
   return (
     <>
@@ -318,19 +332,29 @@ export default function Home(props: { username: string }) {
       </Head>
       <Header href={`/${username}`} />
       <Box>
-        <Typography variant="h6">
-          {username}
-          <IconButton 
-            size="large" 
-            onClick={() => { 
-              setToast("Link copied to clipboard") 
-              const url = `${window.location.origin}/${username}`;
-              navigator.clipboard.writeText(url);
-            }}
-          >
-            <LinkIcon style={{ color: "white" }} />
-          </IconButton>
-        </Typography>
+        <Box display="flex">
+          <Typography variant="h6">
+            {username}
+            <IconButton 
+              size="large" 
+              onClick={handleCopyClipboard}
+            >
+              <LinkIcon style={{ color: "white" }} />
+            </IconButton>
+          </Typography>
+          <UserMenu>
+            <UserMenuItem 
+              onClick={handleCopyClipboard} 
+              Icon={LinkIcon} 
+              text="Share profile" 
+            />
+            <UserMenuItem 
+              onClick={handleLogout} 
+              Icon={LogoutIcon} 
+              text="Log out" 
+            />
+          </UserMenu>
+        </Box>
         <Typography variant="body1">
           {userRequest.data?.description}
         </Typography>
