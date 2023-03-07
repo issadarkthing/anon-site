@@ -1,6 +1,6 @@
 import { Header } from "@/components/Header";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography/Typography";
+import Typography from "@mui/material/Typography";
 import Head from "next/head";
 import { Name } from "@/components/Name";
 
