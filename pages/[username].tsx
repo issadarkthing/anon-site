@@ -13,8 +13,6 @@ import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import IconButton from "@mui/material/IconButton";
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import Avatar from "@mui/material/Avatar";
-import { avatarSize, stringAvatar } from "@/utils/utils"
 import { StatData, User } from "./home/[username]";
 import { GetServerSideProps } from "next";
 import { Header } from "@/components/Header";
