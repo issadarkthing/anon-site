@@ -5,6 +5,7 @@ import { ThemeProvider, createTheme } from "@mui/material/styles"
 import styles from "@/styles/Home.module.css";
 import Box from '@mui/material/Box';
 import { Analytics } from "@vercel/analytics/react";
+import { Footer } from '@/components/Footer';
 
 export const queryClient = new QueryClient();
 
@@ -44,6 +45,7 @@ export default function App({ Component, pageProps }: AppProps) {
             <Analytics />
           </Box>
         </main>
+        <Footer />
       </QueryClientProvider>
     </ThemeProvider>
   )
