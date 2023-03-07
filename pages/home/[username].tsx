@@ -196,6 +196,21 @@ function ReplySection(props: {
     )
   }
 
+  if (props.data.length === 0) {
+    return (
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        marginTop="90px"
+      >
+        <Typography variant="h5" sx={{ opacity: "20%" }}>
+          You can start sharing your profile using <LinkIcon /> button
+        </Typography>
+      </Box>
+    )
+  }
+
   return (
     <>
       {props.data.map(x => {
