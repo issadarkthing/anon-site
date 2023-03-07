@@ -38,7 +38,7 @@ export function Footer() {
               <Link href="/signup">Sign up</Link>
             </Typography>
             <Typography variant="body2">
-              About
+              <Link href="/about">About</Link>
             </Typography>
           </Box>
           <Typography variant="body1">
