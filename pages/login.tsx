@@ -90,8 +90,19 @@ export default function Login() {
     if (res.ok) {
       setStatus("Login successfully");
       const data = await res.json();
-      cookie.set("username", username);
-      cookie.set("token", data.token);
+
+      cookie.set("username", username, { 
+        secure: true, 
+        sameSite: "strict", 
+        expires: 30,
+      });
+
+      cookie.set("token", data.token, { 
+        secure: true, 
+        sameSite: "strict", 
+        expires: 30,
+      });
+
       router.push(`/home/${username}`);
 
     } else {
