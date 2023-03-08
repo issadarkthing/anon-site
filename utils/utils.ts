@@ -49,10 +49,3 @@ export function stringAvatar(name: string) {
     children: `${name.split(' ')[0][0]}`,
   };
 }
-
-export function getAbsoluteURL(path: string) {
-  const baseURL = process.env.URL ? 
-    `https://${process.env.URL}` : 
-    "http://localhost:3000"
-  return baseURL + path
-}

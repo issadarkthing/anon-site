@@ -8,11 +8,9 @@ import { GetServerSideProps } from 'next';
 import Image from "next/image";
 import PersonIcon from '@mui/icons-material/Person';
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
-import { getAbsoluteURL } from '@/utils/utils';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const relativeUrl = context.req.url || "";
-  const url = getAbsoluteURL(relativeUrl);
+  const url = process.env.URL;
 
   //@ts-ignore
   const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
