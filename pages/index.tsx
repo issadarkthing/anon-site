@@ -5,7 +5,9 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { colors } from '@/utils/constants';
 import { GetServerSideProps } from 'next';
-
+import Image from "next/image";
+import PersonIcon from '@mui/icons-material/Person';
+import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   //@ts-ignore
@@ -65,29 +67,49 @@ export default function Home() {
         flexDirection="column" 
         alignItems="center"
         justifyContent="center"
-        gap="50px"
+        gap="40px"
       >
         <Typography variant="h5" style={{ fontFamily: "Comic Cat" }}>
           Ever wanted to see what people say when they are able to send you&nbsp;
           <span style={{ color: colors.accentColor }}>anonymous</span> messages?
-          Also people may be interested with your replies.
-        </Typography>
-        <Typography variant="h5">
-          Create an account or log in and share your profile. Receive anonymous
-          messages and reply to them individually.
         </Typography>
         <Box
           display="flex"
-          gap="30px"
+          justifyContent="space-around"
           sx={{ width: "100%" }}
         >
-          <Button fullWidth variant="contained" href="/login">
-            Log In
-          </Button>
-          <Button fullWidth variant="contained" href="/signup">
-            Sign Up
-          </Button>
+          <Image 
+            alt="index logo" 
+            src="/anon_logo_index.svg" 
+            width={120}
+            height={120}
+          />
+          <Box
+            display="flex"
+            flexDirection="column"
+            gap="30px"
+            sx={{ width: "50%" }}
+          >
+            <Button 
+              startIcon={<PersonIcon />} 
+              variant="contained" 
+              href="/login"
+            >
+              Log In
+            </Button>
+            <Button 
+              startIcon={<PersonAddAlt1Icon />}
+              variant="contained" 
+              href="/signup"
+            >
+              Sign Up
+            </Button>
+          </Box>
         </Box>
+        <Typography variant="body1">
+          Create an account or log in and share your profile. Receive anonymous
+          messages and reply to them individually.
+        </Typography>
       </Box>
     </>
   )
