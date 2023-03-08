@@ -269,6 +269,7 @@ export const StatData = (props: { title: string, value?: number }) => {
 }
 
 export default function Home(props: { username: string }) {
+  const url = process.env.NEXT_PUBLIC_URL;
   const [username, setUsername] = useState(props.username);
   const token = cookie.get("token")!;
   const router = useRouter();
@@ -336,6 +337,11 @@ export default function Home(props: { username: string }) {
       <Head>
         <title>anonmi</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="anonmi" />
+        <meta property="og:description" content="anonymous Q&A platform" />
+        <meta property="og:url" content={`${url}/${username}`} />
+        <meta property="og:image" content={`${url}/index.png`} />
       </Head>
       <Header href={`/${username}`} />
       <ProfileEditModal 

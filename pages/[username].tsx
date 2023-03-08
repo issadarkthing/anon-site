@@ -26,7 +26,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   if (!username) {
     return { 
-      props: {},
       redirect: {
         destination: "/",
         permanent: false,
@@ -219,6 +218,7 @@ export default function Home(props: { user: User }) {
   const [charCount, setCharCount] = useState(0);
   const [loading, setLoading] = useState(false);
   const [toast, setToast] = useState("");
+  const url = process.env.NEXT_PUBLIC_URL;
   const username = props.user.username;
 
   const { isLoading, error, data } = useQuery<Reply[]>("replyData", async () => {
@@ -282,6 +282,11 @@ export default function Home(props: { user: User }) {
       <Head>
         <title>anonmi</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="anonmi" />
+        <meta property="og:description" content="anonymous Q&A platform" />
+        <meta property="og:url" content={`${url}/${username}`} />
+        <meta property="og:image" content={`${url}/index.png`} />
       </Head>
       <Header href="/login" />
       <Box>
