@@ -4,6 +4,53 @@ import { Header } from "@/components/Header";
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { colors } from '@/utils/constants';
+import { GetServerSideProps } from 'next';
+
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  //@ts-ignore
+  const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+  const token = context.req.cookies.token;
+  const username = context.req.cookies.username;
+
+  if (!token || !username) {
+    return { 
+      props: {},
+    };
+  }
+
+
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/authenticate/${username}`, {
+      headers: {
+        token,
+      }
+    });
+
+    if (res.status !== 200) {
+      return { 
+        props: {},
+      };
+    }
+
+    return {
+      props: {},
+      redirect: {
+        destination: `/home/${username}`,
+        permanent: false,
+      }
+    }
+
+  } catch {
+    return {
+      props: {},
+      redirect: {
+        destination: "/500",
+        permanent: false,
+      }
+    }
+  }
+}
 
 export default function Home() {
   return (
