@@ -10,8 +10,6 @@ import PersonIcon from '@mui/icons-material/Person';
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const url = process.env.URL;
-
   //@ts-ignore
   const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
   const token = context.req.cookies.token;
@@ -19,7 +17,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   if (!token || !username) {
     return { 
-      props: { url },
+      props: {},
     };
   }
 
@@ -34,13 +32,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
     if (res.status !== 200) {
       return { 
-        props: { url },
+        props: {},
       };
     }
 
 
     return {
-      props: { url },
+      props: {},
       redirect: {
         destination: `/home/${username}`,
         permanent: false,
@@ -49,7 +47,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   } catch {
     return {
-      props: { url },
+      props: {},
       redirect: {
         destination: "/500",
         permanent: false,
@@ -58,7 +56,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 }
 
-export default function Home(props: { url: string }) {
+export default function Home() {
+  const url = process.env.NEXT_PUBLIC_URL;
+
   return (
     <>
       <Head>
@@ -67,8 +67,8 @@ export default function Home(props: { url: string }) {
         <meta property="og:type" content="website" />
         <meta property="og:title" content="anonmi" />
         <meta property="og:description" content="anonymous Q&A platform" />
-        <meta property="og:url" content={props.url} />
-        <meta property="og:image" content={`${props.url}/index.png`} />
+        <meta property="og:url" content={url} />
+        <meta property="og:image" content={`${url}/index.png`} />
       </Head>
       <Header href="/login" />
       <Box 
