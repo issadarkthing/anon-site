@@ -205,7 +205,11 @@ function ReplySection(props: {
         marginTop="90px"
       >
         <Typography variant="h5" sx={{ opacity: "20%" }}>
-          You can start sharing your profile using <LinkIcon /> button
+          You can start sharing your profile using the
+        </Typography> 
+        &nbsp;<LinkIcon sx={{ opacity: "20%" }} />&nbsp;
+        <Typography variant="h5" sx={{ opacity: "20%" }}>
+          button
         </Typography>
       </Box>
     )
