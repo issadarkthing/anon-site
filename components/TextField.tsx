@@ -6,7 +6,9 @@ type TextFieldProps = {
 } & BaseTextFieldProps;
 
 export const TextField = React.forwardRef(function TextField(props: TextFieldProps, ref) {
-  const [charCount, setCharCount] = useState((props.defaultValue as string).length);
+  const defaultValue = typeof props.defaultValue === "string" ? 
+    props.defaultValue.length : 0;
+  const [charCount, setCharCount] = useState(defaultValue);
 
   return (
     <BaseTextField
