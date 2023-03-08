@@ -8,8 +8,12 @@ import { GetServerSideProps } from 'next';
 import Image from "next/image";
 import PersonIcon from '@mui/icons-material/Person';
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
+import { getAbsoluteURL } from '@/utils/utils';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  const relativeUrl = context.req.url || "";
+  const url = getAbsoluteURL(relativeUrl);
+
   //@ts-ignore
   const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
   const token = context.req.cookies.token;
@@ -17,7 +21,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   if (!token || !username) {
     return { 
-      props: {},
+      props: { url },
     };
   }
 
@@ -28,15 +32,17 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         token,
       }
     });
+    
 
     if (res.status !== 200) {
       return { 
-        props: {},
+        props: { url },
       };
     }
 
+
     return {
-      props: {},
+      props: { url },
       redirect: {
         destination: `/home/${username}`,
         permanent: false,
@@ -45,7 +51,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   } catch {
     return {
-      props: {},
+      props: { url },
       redirect: {
         destination: "/500",
         permanent: false,
@@ -54,12 +60,17 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 }
 
-export default function Home() {
+export default function Home(props: { url: string }) {
   return (
     <>
       <Head>
         <title>anonmi</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="anonmi" />
+        <meta property="og:description" content="anonymous Q&A platform" />
+        <meta property="og:url" content={props.url} />
+        <meta property="og:image" content={`${props.url}index.png`} />
       </Head>
       <Header href="/login" />
       <Box 

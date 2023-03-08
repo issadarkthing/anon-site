@@ -49,3 +49,10 @@ export function stringAvatar(name: string) {
     children: `${name.split(' ')[0][0]}`,
   };
 }
+
+export function getAbsoluteURL(path: string) {
+  const baseURL = process.env.VERCEL_URL ? 
+    `https://${process.env.VERCEL_URL}` : 
+    "http://localhost:3000"
+  return baseURL + path
+}
