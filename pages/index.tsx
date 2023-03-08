@@ -70,7 +70,7 @@ export default function Home(props: { url: string }) {
         <meta property="og:title" content="anonmi" />
         <meta property="og:description" content="anonymous Q&A platform" />
         <meta property="og:url" content={props.url} />
-        <meta property="og:image" content={`${props.url}index.png`} />
+        <meta property="og:image" content={`${props.url}/index.png`} />
       </Head>
       <Header href="/login" />
       <Box 
