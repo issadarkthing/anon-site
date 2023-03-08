@@ -343,7 +343,10 @@ export default function Home(props: { username: string }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta property="og:type" content="website" />
         <meta property="og:title" content="anonmi" />
-        <meta property="og:description" content="anonymous Q&A platform" />
+        <meta 
+          property="og:description" 
+          content={`Send ${username} an anonymous message on anonmi!`} 
+        />
         <meta property="og:url" content={`${url}/${username}`} />
         <meta property="og:image" content={`${url}/index.png`} />
       </Head>

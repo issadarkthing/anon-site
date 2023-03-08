@@ -66,7 +66,7 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta property="og:type" content="website" />
         <meta property="og:title" content="anonmi" />
-        <meta property="og:description" content="anonymous Q&A platform" />
+        <meta property="og:description" content="Anonymous Q&A platform" />
         <meta property="og:url" content={url} />
         <meta property="og:image" content={`${url}/index.png`} />
       </Head>
