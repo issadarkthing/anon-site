@@ -139,7 +139,7 @@ export function ProfileEditModal(props: {
               inputRef={notifyEmailRef}
               defaultChecked={props.user.notify_email} 
             />} 
-            label="Send email when received a new message" 
+            label="Send an email when a new message is received" 
           />
           <Button type="submit" variant="contained">
             {loading ? <CircularProgress sx={{ color: "whitesmoke" }} size={25} /> : "save"}
