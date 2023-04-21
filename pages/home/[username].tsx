@@ -75,6 +75,8 @@ export interface User {
   username: string;
   description: string;
   time: string;
+  email: string;
+  notify_email: boolean;
 }
 
 interface Message {
@@ -280,7 +282,11 @@ export default function Home(props: { username: string }) {
   const [toast, setToast] = useState("");
   const [isEdit, setIsEdit] = useState(false);
   const userRequest = useQuery<User>("userData", async () => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/${username}`);
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/${username}`, { 
+      headers: {
+        token,
+      }
+    });
 
     if (!res.ok) {
       throw new Error(await res.text());
@@ -288,6 +294,13 @@ export default function Home(props: { username: string }) {
       return res.json();
     }
   });
+
+  const profileEditUser = {
+    username,
+    description: userRequest.data?.description || "",
+    email: userRequest.data?.email || "",
+    notify_email: userRequest.data?.notify_email || false,
+  }
 
   let { 
     isLoading, 
@@ -352,8 +365,7 @@ export default function Home(props: { username: string }) {
       </Head>
       <Header href={`/${username}`} />
       <ProfileEditModal 
-        username={username}
-        description={userRequest.data?.description || ""}
+        user={profileEditUser}
         open={isEdit} 
         onClose={() => { 
           setIsEdit(false);

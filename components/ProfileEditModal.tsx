@@ -7,21 +7,31 @@ import { useRef, useState } from "react";
 import { TextField } from "./TextField";
 import cookie from "js-cookie";
 import CircularProgress from "@mui/material/CircularProgress";
+import Switch from "@mui/material/Switch";
+import FormControlLabel from "@mui/material/FormControlLabel";
 
+export interface ProfileEditUser {
+  username: string;
+  description: string;
+  email: string;
+  notify_email: boolean;
+}
 
 export function ProfileEditModal(props: { 
   open: boolean, 
   onClose: () => void,
-  onSubmit: (user: { username: string, description: string }) => void,
-  username: string,
-  description: string,
+  onSubmit: (user: ProfileEditUser) => void,
+  user: ProfileEditUser,
 }) {
   const [helperText, setHelperText] = useState("");
   const [loading, setLoading] = useState(false);
   const usernameRef = useRef<HTMLInputElement>();
   const descriptionRef = useRef<HTMLInputElement>();
+  const emailRef = useRef<HTMLInputElement>();
+  const notifyEmailRef = useRef<HTMLInputElement>();
   const USERNAME_CHAR_LIMIT = 50;
   const DESCRIPTION_CHAR_LIMIT = 100;
+  const EMAIL_CHAR_LIMIT = 200;
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,25 +39,33 @@ export function ProfileEditModal(props: {
     const token = cookie.get("token")!;
     const username = usernameRef.current?.value || "";
     const description = descriptionRef.current?.value || "";
+    const email = emailRef.current?.value || "";
+    const notify_email = notifyEmailRef.current?.checked;
 
     if (!username) {
       return
     }
 
     setLoading(true);
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/${props.username}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/${props.user.username}`, {
       method: "PATCH",
       headers: {
         token,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ username, description }),
+      body: JSON.stringify({ username, description, email, notify_email }),
     });
     setLoading(false);
 
     if (res.ok) {
       setHelperText("Edited successfully");
-      props.onSubmit({ username, description });
+      props.onSubmit({ 
+        username, 
+        description, 
+        email, 
+        notify_email,
+      });
+
       setHelperText("");
     } else {
       setHelperText(await res.text());
@@ -98,15 +116,30 @@ export function ProfileEditModal(props: {
             label="Username"
             multiline={false}
             characterLimit={USERNAME_CHAR_LIMIT}
-            defaultValue={props.username}
+            defaultValue={props.user.username}
             ref={usernameRef}
           />
           <TextField
             id="description"
             label="Description"
             characterLimit={DESCRIPTION_CHAR_LIMIT}
-            defaultValue={props.description}
+            defaultValue={props.user.description}
             ref={descriptionRef}
+          />
+          <TextField
+            id="email"
+            label="Email"
+            characterLimit={EMAIL_CHAR_LIMIT}
+            defaultValue={props.user.email}
+            multiline={false}
+            ref={emailRef}
+          />
+          <FormControlLabel 
+            control={<Switch 
+              inputRef={notifyEmailRef}
+              defaultChecked={props.user.notify_email} 
+            />} 
+            label="Send email when received a new message" 
           />
           <Button type="submit" variant="contained">
             {loading ? <CircularProgress sx={{ color: "whitesmoke" }} size={25} /> : "save"}
