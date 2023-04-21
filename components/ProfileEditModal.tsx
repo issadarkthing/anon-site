@@ -40,7 +40,7 @@ export function ProfileEditModal(props: {
     const username = usernameRef.current?.value || "";
     const description = descriptionRef.current?.value || "";
     const email = emailRef.current?.value || "";
-    const notify_email = notifyEmailRef.current?.checked;
+    const notify_email = !!notifyEmailRef.current?.checked;
 
     if (!username) {
       return
