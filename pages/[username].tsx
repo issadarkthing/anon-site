@@ -18,6 +18,7 @@ import { GetServerSideProps } from "next";
 import { Header } from "@/components/Header";
 import LinkIcon from '@mui/icons-material/Link';
 import Snackbar from "@mui/material/Snackbar";
+import { EmojiSelector } from "@/components/EmojiSelector";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   //@ts-ignore
@@ -346,9 +347,15 @@ export default function Home(props: { user: User }) {
             }}
             helperText={`${charCount}/${CHARACTER_LIMIT}`}
           />
-          <Button type="submit" variant="contained" >
-            {loading ? <CircularProgress sx={{ color: "whitesmoke" }} size={25} /> : "send"}
-          </Button>
+          <Box
+            display="flex"
+            justifyContent="flex-end"
+          >
+            <EmojiSelector inputRef={messageRef} />
+            <Button type="submit" variant="contained" >
+              {loading ? <CircularProgress sx={{ color: "whitesmoke" }} size={25} /> : "send"}
+            </Button>
+          </Box>
           <Typography variant="caption">{sendStatus}</Typography>
           <ReplySection isLoading={isLoading} error={error as string} data={data} />
         </Box>

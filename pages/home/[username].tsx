@@ -23,6 +23,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import { TextField } from "@/components/TextField";
 import { colors } from "@/utils/constants";
 import { ProfileEditModal } from "@/components/ProfileEditModal";
+import { EmojiSelector } from "@/components/EmojiSelector";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   //@ts-ignore
@@ -167,13 +168,18 @@ function ReplySection(props: {
             ref={messageRef}
             characterLimit={CHARACTER_LIMIT}
           />}
-          <Button 
-            fullWidth 
-            type="submit"
-            variant="contained"
+          <Box
+            display="flex"
+            justifyContent="flex-end"
           >
-            {loading ? <CircularProgress sx={{ color: "whitesmoke" }} size={25} /> : "reply"}
-          </Button>
+            {showInput && <EmojiSelector inputRef={messageRef} />}
+            <Button 
+              type="submit"
+              variant="contained"
+            >
+              {loading ? <CircularProgress sx={{ color: "whitesmoke" }} size={25} /> : "reply"}
+            </Button>
+          </Box>
           <Typography variant="caption">{status}</Typography>
         </form>
       </Box>
@@ -243,7 +249,7 @@ function ReplySection(props: {
             <Typography variant="body1" gutterBottom style={{ fontWeight: "bold" }}>
               {x.message}
             </Typography>
-            <Typography variant="body2">
+            <Typography variant="body1">
               {x.reply}
             </Typography>
             <ReplyButton hidden={x.reply !== null} message={x} />
