@@ -30,12 +30,22 @@ export const EmojiSelector = function EmojiSelector(props: EmojiSelectorProps) {
     message.value = message.value.substring(0, cursorPosition) + 
       emojiData.emoji + 
       message.value.substring(cursorPosition);
-  }
+  };
+
 
   return (
     <>
-      <IconButton onClick={emojiOnClick}>
-        <EmojiEmotionsIcon sx={{ color: "whitesmoke" }} />
+      <IconButton 
+        onClick={emojiOnClick}
+        sx={{
+          filter: "grayscale(100%)",
+          "&:hover": {
+            color: "rgba(0, 0, 0)",
+            filter: "none"
+          }
+        }}
+      >
+        😀
       </IconButton>
       <Popover
         sx={{ ".MuiPopover-paper": { backgroundColor: "transparent" } }}
