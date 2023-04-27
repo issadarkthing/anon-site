@@ -1,9 +1,7 @@
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { useEffect, useRef, useState } from 'react';
-import CircularProgress from '@mui/material/CircularProgress';
 import { useQuery } from 'react-query';
 import { DateTime } from "luxon";
 import Head from "next/head";
@@ -19,6 +17,7 @@ import { Header } from "@/components/Header";
 import LinkIcon from '@mui/icons-material/Link';
 import Snackbar from "@mui/material/Snackbar";
 import { EmojiSelector } from "@/components/EmojiSelector";
+import { Button } from "@/components/Button";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   //@ts-ignore
@@ -352,9 +351,7 @@ export default function Home(props: { user: User }) {
             justifyContent="flex-end"
           >
             <EmojiSelector inputRef={messageRef} />
-            <Button type="submit" variant="contained" >
-              {loading ? <CircularProgress sx={{ color: "whitesmoke" }} size={25} /> : "send"}
-            </Button>
+            <Button loading={loading} label="send" />
           </Box>
           <Typography variant="caption">{sendStatus}</Typography>
           <ReplySection isLoading={isLoading} error={error as string} data={data} />
